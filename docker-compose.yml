@@ -1,0 +1,33 @@
+version: '3'
+services:
+
+  leitura:
+    build: .
+    container_name: corrida-app
+    restart: unless-stopped
+    tty: true
+    working_dir: /var/www/html
+    volumes:
+      - ./app:/var/www/html
+    networks:
+      - app-network
+    ports:
+      - "8080:80"
+
+
+  corrida-db:
+    image: mysql:5.7.22
+    command: --innodb-use-native-aio=0
+    ports:
+      - "3306:3306"
+    volumes:
+      - .docker/dbdata:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: corrida-db
+      MYSQL_ROOT_PASSWORD: laravel
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
