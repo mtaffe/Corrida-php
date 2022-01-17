@@ -20,7 +20,8 @@ class ResultadoController extends Controller
     public function salvarResultados(Request $request)
     {
         $this->novoResultado($request);
-        return view('layout.dashboard');
+        $data = Prova::all();
+        return view('layout.addresultado', ['provas' => $data]);
     }
 
     //escolhe prova para mostrar resultado (web-get)
@@ -34,9 +35,7 @@ class ResultadoController extends Controller
     public function resultados(Request $request)
     {
         $resultado = $this->geraResultados($request);
-        echo '<pre>';
-        var_dump($resultado);
-        die;
+        return view('layout.listachegada', ['resultado' => $resultado, 'posicao' => 1]);
     }
 
     //seleciona categoria para mostrar resultado (web-get)
@@ -50,7 +49,7 @@ class ResultadoController extends Controller
     public function resultadosCategoria(Request $request)
     {
         $resultados = $this->geraResultadosCategoria($request);
-        return view('layout.dashboard');
+        return view('layout.listachegada', ['resultado' => $resultados, 'posicao' => 1]);
     }
 
 
@@ -79,10 +78,15 @@ class ResultadoController extends Controller
     //função para gerar resultados por categoria
     protected function geraResultadosCategoria(Request $request)
     {
+        $messages = [
+            "prova_id.required" => "Insira o Id da prova",
+            "categoria.required" => "Insira uma categoria"
+        ];
+
         $validated = $request->validate([
             "prova_id" => "required",
             "categoria" => "required",
-        ]);
+        ], $messages);
 
         $provaId = $validated['prova_id'];
         $prova = Prova::find($provaId);
@@ -148,12 +152,19 @@ class ResultadoController extends Controller
     //função para adicionar resultados
     protected function novoResultado(Request $request)
     {
+        $messages = [
+            "corredor_id.required" => "Insira o seu ID",
+            "prova_id.required" => "Insira o ID da prova",
+            "inicio.required" => "Insira a hora de ínicio da prova",
+            "chegada.required" => "Insira a hora de conclusão da prova",
+        ];
+
         $validated = $request->validate([
             "corredor_id" => "required",
             "prova_id" => "required",
             "inicio" => "required",
             "chegada" => "required",
-        ]);
+        ], $messages);
 
         Resultado::addResultados($validated);
 
@@ -163,9 +174,13 @@ class ResultadoController extends Controller
     //função para exibir resultado geral
     protected function geraResultados(Request $request)
     {
+        $messages = [
+            "prova_id.required" => "Insira o Id da prova"
+        ];
+
         $validated = $request->validate([
             "prova_id" => "required",
-        ]);
+        ], $messages);
 
         $prova = $validated['prova_id'];
 

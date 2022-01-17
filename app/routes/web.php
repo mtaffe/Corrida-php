@@ -44,3 +44,6 @@ Route::post('/resultados', [ResultadoController::class, 'resultados'])->name('re
 
 Route::get('/resultadosCategorias', [ResultadoController::class, 'categoria'])->name('selecionarCategoria');
 Route::post('/resultadosCategorias', [ResultadoController::class, 'resultadosCategoria'])->name('resultadosCaegoria');
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

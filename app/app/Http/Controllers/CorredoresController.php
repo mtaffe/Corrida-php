@@ -39,7 +39,13 @@ class CorredoresController extends Controller
     protected function novoCorredor(Request $request)
     {
         $messages = [
-            "nome.required" => "É necessário um nome"
+            "nome.required" => "É necessário um nome",
+            "cpf.required" => "Informe o CPF.",
+            "cpf.unique" => "CPF já cadastrado.",
+            "cpf.min" => "Informe um CPF válido.",
+            "cpf.max" => "Informe um CPF válido.",
+            "data_nascimento.required" => "Informe a data de nascimento.",
+            "data_nascimento.before" => "É obrigatório que seja maior de 18 anos." 
         ];
 
 

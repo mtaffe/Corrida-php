@@ -18,7 +18,8 @@ class CorredorProvasController extends Controller
     public function salvarParticipacao(Request $request, Prova $prova)
     {
         $this->novaParticipao($request, $prova);
-        return view('layout.dashboard');
+        $data = Prova::all();
+        return view('layout.participar', ['prova' => $data]);
     }
 
     public function salvarParticipacaoApi(Request $request, Prova $prova)
@@ -29,10 +30,15 @@ class CorredorProvasController extends Controller
 
     protected function novaParticipao(Request $request, Prova $prova)
     {
+        $messages = [
+            "corredor_id.required" => "Informe o seu ID",
+            "prova_id.required" => "Informe o ID da prova"
+        ];
+
         $validated = $request->validate([
             "corredor_id" => "required",
             "prova_id" => "required",
-        ]);
+        ], $messages);
 
         $corredorId = $validated['corredor_id'];
         $provaId = $validated['prova_id'];

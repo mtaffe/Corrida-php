@@ -26,15 +26,20 @@ class ProvasController extends Controller
     public function salvarProvas(Request $request)
     {
         $this->novaProva($request);
-        return view('layout.dashboard');
+        return view('layout.addProvas');
     }
 
     protected function novaProva(Request $request)
     {
+        $messages = [
+            "tipo.required" => "Insira o Id da prova",
+            "dia.required" => "Seleciona o dia pra prova"
+        ];
+        
         $validated = $request->validate([
             "tipo" => "required",
             "dia" => "required|date"
-        ]);
+        ], $messages);
 
         Prova::addProvas($validated);
 
